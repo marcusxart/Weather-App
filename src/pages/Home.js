@@ -1,11 +1,13 @@
 import React from "react";
 import Header from "../componets/Header";
 import styled from "styled-components";
+import Content from "../componets/Content";
 
 const Home = () => {
   return (
     <HomeStyled>
       <Header />
+      <Content />
     </HomeStyled>
   );
 };

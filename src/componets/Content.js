@@ -30,4 +30,4 @@ const ContentStyled = styled.section`
   }
 `;
 
-export default Context;
+export default Content;

@@ -20,6 +20,11 @@ h1{
     font-family: 'Lobster', cursive;
     font-weight: 400;
 }
+h2,
+h3,
+p{
+    color: #ffffff;
+}
 `;
 
 export default GlobalStyles;
