@@ -2,8 +2,19 @@ import React from "react";
 import Header from "../componets/Header";
 import styled from "styled-components";
 import Content from "../componets/Content";
+import axios from "axios";
 
 const Home = () => {
+  axios
+    .get(
+      "http://api.weatherapi.com/v1/current.json?key=f756f7af453a49ebaae154848222804&q=abia&aqi=no"
+    )
+    .then((data) => {
+      console.log(data.data);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
   return (
     <HomeStyled>
       <Header />
