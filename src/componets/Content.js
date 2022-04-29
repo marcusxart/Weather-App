@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const Content = () => {
+const Content = ({ isToggle }) => {
   return (
-    <ContentStyled>
+    <ContentStyled isToggle={isToggle}>
       <h2>26c</h2>
       <div className="description">
         <h3>London</h3>
@@ -19,21 +19,25 @@ const Content = () => {
 
 const ContentStyled = styled.section`
   display: flex;
-  height: 100%;
-  width: 50%;
-  margin: auto;
+  transition: filter 0.5s;
+  filter: ${(props) => (props.isToggle ? "blur(10px)" : "blur(0px)")};
+  width: 100%;
+  margin: 50% auto 0;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: left;
+  @media screen and (max-height: 400px) {
+    margin: 10px auto 0;
+  }
   h2 {
+    width: 180px;
     font-size: 6rem;
     font-weight: 500;
-    width: 100%;
     height: 130px;
   }
   .description {
-    width: 100%;
+    width: 180px;
     h3 {
       font-weight: 500;
       font-size: 2rem;

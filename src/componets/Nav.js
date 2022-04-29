@@ -1,15 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { defaultState, line1, line2, line3 } from "../animation";
 
-const Nav = () => {
+const Nav = ({ handleToggle, isToggle }) => {
   return (
     <NavStyled>
       <h1>The weather</h1>
-      <Menu>
-        <Line />
-        <Line />
-        <Line />
+      <Menu
+        onClick={handleToggle}
+        variants={defaultState}
+        animate={"animate"}
+        initial={"stop"}
+      >
+        <Line variants={line1} animate={isToggle ? "animate" : "stop"} />
+        <Line variants={line3} animate={isToggle ? "animate" : "stop"} />
+        <Line variants={line2} animate={isToggle ? "animate" : "stop"} />
       </Menu>
     </NavStyled>
   );
@@ -26,8 +32,10 @@ const NavStyled = styled.nav`
     font-size: 1.2rem;
   }
 `;
-const Menu = styled.div``;
-const Line = styled.div`
+const Menu = styled(motion.div)`
+  overflow: hidden;
+`;
+const Line = styled(motion.div)`
   height: 2.5px;
   width: 30px;
   margin: 7px 0;

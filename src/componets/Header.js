@@ -1,10 +1,10 @@
 import React from "react";
 import Nav from "./Nav";
 
-const Header = () => {
+const Header = ({ handleToggle, isToggle }) => {
   return (
     <header>
-      <Nav />
+      <Nav handleToggle={handleToggle} isToggle={isToggle} />
     </header>
   );
 };
