@@ -30,7 +30,7 @@ const Menu = styled.div``;
 const Line = styled.div`
   height: 2.5px;
   width: 30px;
-  margin: 7px;
+  margin: 7px 0;
   background: #ffffff;
   opacity: 0.5;
 `;

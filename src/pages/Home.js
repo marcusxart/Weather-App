@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../componets/Header";
 import styled from "styled-components";
 import Content from "../componets/Content";
+import AsideBar from "../componets/AsideBar";
 import axios from "axios";
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
   return (
     <HomeStyled>
       <Header />
+      <AsideBar />
       <Content />
     </HomeStyled>
   );
@@ -31,6 +33,7 @@ const HomeStyled = styled.div`
     rgba(55, 150, 209, 1) 90%
   );
   height: 100vh;
+  overflow: hidden;
 `;
 
 export default Home;

@@ -19,18 +19,21 @@ const Content = () => {
 
 const ContentStyled = styled.section`
   display: flex;
-  min-height: 90vh;
-  padding-top: 20%;
+  height: 100%;
+  width: 50%;
+  margin: auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: left;
   h2 {
     font-size: 6rem;
     font-weight: 500;
-    width: 50%;
+    width: 100%;
+    height: 130px;
   }
   .description {
-    width: 50%;
+    width: 100%;
     h3 {
       font-weight: 500;
       font-size: 2rem;

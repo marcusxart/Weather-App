@@ -25,6 +25,7 @@ h3,
 p{
     color: #ffffff;
 }
+
 `;
 
 export default GlobalStyles;
