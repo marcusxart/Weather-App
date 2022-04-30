@@ -31,6 +31,9 @@ const NavStyled = styled.nav`
   h1 {
     font-size: 1.2rem;
   }
+  @media screen and (max-height: 400px) {
+    min-height: 15vh;
+  }
 `;
 const Menu = styled(motion.div)`
   overflow: hidden;

@@ -2,49 +2,63 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { fade } from "../animation";
 
-const AsideBar = () => {
+const AsideBar = ({ isToggle, weatherData = { weatherData } }) => {
   return (
-    <AsideSection>
-      <SearchBar>
-        <input type="text" placeholder="Another Location" />
-        <div className="icon-box">
-          <FontAwesomeIcon icon={faSearch} />
-        </div>
-      </SearchBar>
-      <SearchHistory>
-        <p>london</p>
-        <p>london</p>
-        <p>london</p>
-        <p>london</p>
-      </SearchHistory>
-      <WeatherDetail>
-        <h3>Weather Details</h3>
-        <div className="result-box">
-          <p>yes</p>
-          <p className="result">no</p>
-        </div>
-        <div className="result-box">
-          <p>yes</p>
-          <p className="result">no</p>
-        </div>
-        <div className="result-box">
-          <p>yes</p>
-          <p className="result">no</p>
-        </div>
-        <div className="result-box">
-          <p>yes</p>
-          <p className="result">no</p>
-        </div>
-      </WeatherDetail>
-    </AsideSection>
+    <AnimatePresence>
+      {isToggle && (
+        <AsideSection
+          variants={fade}
+          animate={"animate"}
+          initial={"stop"}
+          exit={"exit"}
+        >
+          <SearchBar>
+            <input type="text" placeholder="Another Location" />
+            <div className="icon-box">
+              <FontAwesomeIcon icon={faSearch} />
+            </div>
+          </SearchBar>
+          <SearchHistory>
+            <p>london</p>
+            <p>london</p>
+            <p>london</p>
+            <p>london</p>
+          </SearchHistory>
+          <>
+            {weatherData && (
+              <WeatherDetail>
+                <h3>Weather Details</h3>
+                <div className="result-box">
+                  <p>Cloudly</p>
+                  <p className="result">{weatherData.current.cloud}%</p>
+                </div>
+                <div className="result-box">
+                  <p>Humidity</p>
+                  <p className="result">{weatherData.current.humidity}%</p>
+                </div>
+                <div className="result-box">
+                  <p>Wind</p>
+                  <p className="result">{weatherData.current.wind_kph}km/h</p>
+                </div>
+                <div className="result-box">
+                  <p>Country</p>
+                  <p className="result">{weatherData.location.country}</p>
+                </div>
+              </WeatherDetail>
+            )}
+          </>
+        </AsideSection>
+      )}
+    </AnimatePresence>
   );
 };
 
-const AsideSection = styled.section`
+const AsideSection = styled(motion.section)`
   position: fixed;
-  display: none;
+  z-index: 10;
   overflow-x: scroll;
   top: 10vh;
   width: 100%;
@@ -55,10 +69,14 @@ const AsideSection = styled.section`
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.5);
   }
+  @media screen and (max-height: 400px) {
+    top: 15vh;
+  }
 `;
 
 const SearchBar = styled.div`
   display: flex;
+  margin-top: 5px;
   input {
     width: 80%;
     height: 20px;
@@ -75,7 +93,7 @@ const SearchBar = styled.div`
   .icon-box {
     position: absolute;
     cursor: pointer;
-    top: 0;
+    top: 5px;
     right: 0;
     display: flex;
     justify-content: center;
@@ -107,13 +125,14 @@ const WeatherDetail = styled.div`
     font-size: 0.8rem;
     font-weight: 500;
     margin: 1.5rem 0;
+    color: #f1f1f1;
   }
   .result-box {
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
     .result {
-      color: white;
+      color: #f1f1f1;
     }
   }
 `;

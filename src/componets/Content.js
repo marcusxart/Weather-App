@@ -1,40 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { dateAndTime } from "../utils";
 
-const Content = ({ isToggle }) => {
+const Content = ({ isToggle, weatherData }) => {
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
+  console.log(weatherData);
+
+  useEffect(() => {
+    if (weatherData) {
+      const [date, time] = dateAndTime(weatherData.location.localtime);
+      setDate(date);
+      setTime(time);
+    }
+  }, [weatherData]);
   return (
-    <ContentStyled isToggle={isToggle}>
-      <h2>26c</h2>
-      <div className="description">
-        <h3>London</h3>
-        <p>TIME AND DATE</p>
-        <div className="icon">
-          <p>icon</p>
-          <p>sunny</p>
-        </div>
-      </div>
-    </ContentStyled>
+    <>
+      {weatherData && (
+        <ContentStyled isToggle={isToggle}>
+          <h2>{weatherData.current.temp_c}°</h2>
+          <div className="description">
+            <h3>{weatherData.location.region}</h3>
+            <div>
+              <p>{`${time} + ${date}`}</p>
+            </div>
+            <div className="icon">
+              <img src={weatherData.current.condition.icon} alt="" />
+              <p>{weatherData.current.condition.text}</p>
+            </div>
+          </div>
+        </ContentStyled>
+      )}
+    </>
   );
 };
 
 const ContentStyled = styled.section`
   display: flex;
   transition: filter 0.5s;
-  filter: ${(props) => (props.isToggle ? "blur(10px)" : "blur(0px)")};
+  ${(props) => (props.isToggle ? "filter: blur(10px);" : "")};
   width: 100%;
-  margin: 50% auto 0;
+  min-height: 80vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-right: 20px;
   text-align: left;
   @media screen and (max-height: 400px) {
-    margin: 10px auto 0;
+    margin: 10px 0 0;
+    padding-bottom: 100px;
   }
   h2 {
     width: 180px;
-    font-size: 6rem;
+    font-size: 5rem;
     font-weight: 500;
-    height: 130px;
+    height: 110px;
   }
   .description {
     width: 180px;
@@ -42,10 +62,10 @@ const ContentStyled = styled.section`
       font-weight: 500;
       font-size: 2rem;
       height: 42px;
+      margin-bottom: 5px;
     }
     p {
       font-size: 0.8rem;
-      margin-bottom: 0.5rem;
     }
   }
   .icon {

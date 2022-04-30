@@ -24,6 +24,7 @@ h2,
 h3,
 p{
     color: #ffffff;
+    letter-spacing:0.5px ;
 }
 
 `;

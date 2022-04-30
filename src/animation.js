@@ -39,3 +39,17 @@ export const line3 = {
     transition: { duration: 0.5, ease: "easeOut" },
   },
 };
+
+export const fade = {
+  animate: {
+    opacity: 1,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+  stop: {
+    opacity: 0,
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
