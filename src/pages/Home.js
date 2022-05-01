@@ -3,8 +3,8 @@ import Header from "../componets/Header";
 import styled from "styled-components";
 import Content from "../componets/Content";
 import AsideBar from "../componets/AsideBar";
-import { AnimatePresence } from "framer-motion";
 import axios from "axios";
+import MyVideo from "../componets/MyVideo";
 
 const Home = () => {
   const [isToggle, setIsToggle] = useState(false);
@@ -30,20 +30,21 @@ const Home = () => {
   return (
     <HomeStyled>
       <Header isToggle={isToggle} handleToggle={handleToggle} />
-      <AsideBar isToggle={isToggle} weatherData={weatherData} />
+      <AsideBar
+        isToggle={isToggle}
+        weatherData={weatherData}
+        setWeatherData={setWeatherData}
+        setIsToggle={setIsToggle}
+      />
       <Content isToggle={isToggle} weatherData={weatherData} />
+      <MyVideo />
     </HomeStyled>
   );
 };
 
 const HomeStyled = styled.div`
-  background: rgb(172, 202, 221);
-  background: linear-gradient(
-    0deg,
-    rgba(172, 202, 221, 1) 15%,
-    rgba(55, 150, 209, 1) 90%
-  );
-  height: 100vh;
+  position: relative;
+  min-height: 100vh;
   overflow: hidden;
 `;
 

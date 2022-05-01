@@ -22,8 +22,9 @@ h1{
 }
 h2,
 h3,
+h4,
 p{
-    color: #ffffff;
+    color: #f5f5f5;
     letter-spacing:0.5px ;
 }
 

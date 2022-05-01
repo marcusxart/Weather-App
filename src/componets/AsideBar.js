@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { fade } from "../animation";
 
-const AsideBar = ({ isToggle, weatherData = { weatherData } }) => {
+const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
+  const [searchValue, setSearchValue] = useState(null);
+
+  const handleSearch = () => {
+    axios
+      .get(
+        `http://api.weatherapi.com/v1/current.json?key=f756f7af453a49ebaae154848222804&q=${searchValue}&aqi=no`
+      )
+      .then((data) => {
+        setWeatherData(data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    setSearchValue("");
+    setIsToggle(false);
+  };
   return (
     <AnimatePresence>
       {isToggle && (
@@ -16,8 +33,16 @@ const AsideBar = ({ isToggle, weatherData = { weatherData } }) => {
           exit={"exit"}
         >
           <SearchBar>
-            <input type="text" placeholder="Another Location" />
-            <div className="icon-box">
+            <input
+              type="text"
+              placeholder="Another Location"
+              value={searchValue || ""}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              autoFocus
+            />
+            <div className="icon-box" onClick={() => handleSearch(searchValue)}>
               <FontAwesomeIcon icon={faSearch} />
             </div>
           </SearchBar>
@@ -42,10 +67,6 @@ const AsideBar = ({ isToggle, weatherData = { weatherData } }) => {
                 <div className="result-box">
                   <p>Wind</p>
                   <p className="result">{weatherData.current.wind_kph}km/h</p>
-                </div>
-                <div className="result-box">
-                  <p>Country</p>
-                  <p className="result">{weatherData.location.country}</p>
                 </div>
               </WeatherDetail>
             )}

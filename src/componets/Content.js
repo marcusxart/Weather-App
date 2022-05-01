@@ -20,7 +20,8 @@ const Content = ({ isToggle, weatherData }) => {
         <ContentStyled isToggle={isToggle}>
           <h2>{weatherData.current.temp_c}°</h2>
           <div className="description">
-            <h3>{weatherData.location.region}</h3>
+            <h3>{weatherData.location.name}</h3>
+            <h4>{weatherData.location.country}</h4>
             <div>
               <p>{`${time} + ${date}`}</p>
             </div>
@@ -36,6 +37,8 @@ const Content = ({ isToggle, weatherData }) => {
 };
 
 const ContentStyled = styled.section`
+  position: sticky;
+  z-index: 3;
   display: flex;
   transition: filter 0.5s;
   ${(props) => (props.isToggle ? "filter: blur(10px);" : "")};
@@ -51,13 +54,13 @@ const ContentStyled = styled.section`
     padding-bottom: 100px;
   }
   h2 {
-    width: 180px;
+    width: 200px;
     font-size: 5rem;
     font-weight: 500;
     height: 110px;
   }
   .description {
-    width: 180px;
+    width: 200px;
     h3 {
       font-weight: 500;
       font-size: 2rem;
