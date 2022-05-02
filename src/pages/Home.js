@@ -30,13 +30,13 @@ const Home = () => {
   return (
     <HomeStyled>
       <Header isToggle={isToggle} handleToggle={handleToggle} />
+      <Content isToggle={isToggle} weatherData={weatherData} />
       <AsideBar
         isToggle={isToggle}
         weatherData={weatherData}
         setWeatherData={setWeatherData}
         setIsToggle={setIsToggle}
       />
-      <Content isToggle={isToggle} weatherData={weatherData} />
       <MyVideo />
     </HomeStyled>
   );

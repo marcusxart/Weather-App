@@ -41,7 +41,7 @@ const ContentStyled = styled.section`
   z-index: 3;
   display: flex;
   transition: filter 0.5s;
-  ${(props) => (props.isToggle ? "filter: blur(10px);" : "")};
+  ${(props) => (props.isToggle ? "filter: blur(10px);" : "filter: blur(0px)")};
   width: 100%;
   min-height: 80vh;
   flex-direction: column;

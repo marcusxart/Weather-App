@@ -1,3 +1,4 @@
+// Format time
 export const dateAndTime = (data) => {
   const dateString = data.split(" ");
   const timeString = dateString[1].split(":");

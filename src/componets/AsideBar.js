@@ -8,11 +8,31 @@ import { fade } from "../animation";
 
 const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
   const [searchValue, setSearchValue] = useState(null);
+  const [history, setHisory] = useState(
+    JSON.parse(localStorage.getItem("history"))
+      ? JSON.parse(localStorage.getItem("history"))
+      : []
+  );
 
-  const handleSearch = () => {
+  const handleHistory = (search) => {
+    const id = history.length ? history[history.length - 1].id + 1 : 1;
+    const searchObj = { id, search };
+    const newHistory = [...history, searchObj];
+    localStorage.setItem("history", JSON.stringify(newHistory));
+    if (newHistory[4]) {
+      const filterHistory = newHistory.filter(
+        (value) => value.id !== newHistory[0].id
+      );
+      localStorage.setItem("history", JSON.stringify(filterHistory));
+      return setHisory(filterHistory);
+    }
+    setHisory(newHistory);
+  };
+
+  const handleSearch = (search) => {
     axios
       .get(
-        `http://api.weatherapi.com/v1/current.json?key=f756f7af453a49ebaae154848222804&q=${searchValue}&aqi=no`
+        `http://api.weatherapi.com/v1/current.json?key=f756f7af453a49ebaae154848222804&q=${search}&aqi=no`
       )
       .then((data) => {
         setWeatherData(data.data);
@@ -20,9 +40,11 @@ const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
       .catch((err) => {
         console.log(err.message);
       });
+    handleHistory(search);
     setSearchValue("");
     setIsToggle(false);
   };
+
   return (
     <AnimatePresence>
       {isToggle && (
@@ -47,10 +69,15 @@ const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
             </div>
           </SearchBar>
           <SearchHistory>
-            <p>london</p>
-            <p>london</p>
-            <p>london</p>
-            <p>london</p>
+            {history.map((value, index) => (
+              <p
+                style={{ cursor: "pointer" }}
+                key={index}
+                onClick={(e) => handleSearch(e.target.textContent)}
+              >
+                {value.search}
+              </p>
+            ))}
           </SearchHistory>
           <>
             {weatherData && (
@@ -79,19 +106,19 @@ const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
 
 const AsideSection = styled(motion.section)`
   position: fixed;
-  z-index: 10;
-  overflow-x: scroll;
-  top: 10vh;
+  z-index: 8;
+  top: 0;
   width: 100%;
   height: 100vh;
-  padding: 0 30px 10%;
+  padding: 10vh 30px 10%;
   background: rgba(23, 37, 58, 0.7);
   p {
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.5);
   }
   @media screen and (max-height: 400px) {
-    top: 15vh;
+    padding-top: 15vh;
+    overflow-x: scroll;
   }
 `;
 
@@ -114,7 +141,8 @@ const SearchBar = styled.div`
   .icon-box {
     position: absolute;
     cursor: pointer;
-    top: 5px;
+    top: 10vh;
+    margin-top: 5px;
     right: 0;
     display: flex;
     justify-content: center;
@@ -130,12 +158,12 @@ const SearchBar = styled.div`
 
 const SearchHistory = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 35vh;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  min-height: 30vh;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   p {
-    margin: 20px 0;
+    margin: 10px 0;
   }
 `;
 
