@@ -13,6 +13,11 @@ const Home = () => {
   const handleToggle = () => {
     setIsToggle(!isToggle);
   };
+  const [mobileSize, setMobileSize] = useState(window.innerWidth < 900);
+
+  const handleResize = () => {
+    setMobileSize(window.innerWidth < 860);
+  };
 
   useEffect(() => {
     axios
@@ -25,6 +30,8 @@ const Home = () => {
       .catch((err) => {
         console.log(err.message);
       });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -36,6 +43,7 @@ const Home = () => {
         weatherData={weatherData}
         setWeatherData={setWeatherData}
         setIsToggle={setIsToggle}
+        mobileSize={mobileSize}
       />
       <MyVideo />
     </HomeStyled>

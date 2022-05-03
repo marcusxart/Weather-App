@@ -4,9 +4,16 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from "framer-motion";
-import { fade } from "../animation";
+import { fade, defaultState } from "../animation";
+import Blank from "./Blank";
 
-const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
+const AsideBar = ({
+  isToggle,
+  weatherData,
+  setWeatherData,
+  setIsToggle,
+  mobileSize,
+}) => {
   const [searchValue, setSearchValue] = useState(null);
   const [history, setHisory] = useState(
     JSON.parse(localStorage.getItem("history"))
@@ -46,92 +53,117 @@ const AsideBar = ({ isToggle, weatherData, setWeatherData, setIsToggle }) => {
   };
 
   return (
-    <AnimatePresence>
-      {isToggle && (
-        <AsideSection
-          variants={fade}
-          animate={"animate"}
-          initial={"stop"}
-          exit={"exit"}
-        >
-          <SearchBar>
-            <input
-              type="text"
-              placeholder="Another Location"
-              value={searchValue || ""}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-              autoFocus
-            />
-            <div className="icon-box" onClick={() => handleSearch(searchValue)}>
-              <FontAwesomeIcon icon={faSearch} />
-            </div>
-          </SearchBar>
-          <SearchHistory>
-            {history.map((value, index) => (
-              <p
-                style={{ cursor: "pointer" }}
-                key={index}
-                onClick={(e) => handleSearch(e.target.textContent)}
-              >
-                {value.search}
-              </p>
-            ))}
-          </SearchHistory>
-          <>
-            {weatherData && (
-              <WeatherDetail>
-                <h3>Weather Details</h3>
-                <div className="result-box">
-                  <p>Cloudly</p>
-                  <p className="result">{weatherData.current.cloud}%</p>
+    <>
+      <AnimatePresence>
+        <Hide>
+          {((isToggle && mobileSize) || !mobileSize) && (
+            <AsideSection
+              variants={mobileSize ? fade : defaultState}
+              animate={"animate"}
+              initial={"stop"}
+              exit={"exit"}
+            >
+              <SearchBar>
+                <input
+                  type="text"
+                  placeholder="Another Location"
+                  value={searchValue || ""}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
+                  autoFocus
+                />
+                <div
+                  className="icon-box"
+                  onClick={() => handleSearch(searchValue)}
+                >
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    size={mobileSize ? "xs" : "xl"}
+                  />
                 </div>
-                <div className="result-box">
-                  <p>Humidity</p>
-                  <p className="result">{weatherData.current.humidity}%</p>
-                </div>
-                <div className="result-box">
-                  <p>Wind</p>
-                  <p className="result">{weatherData.current.wind_kph}km/h</p>
-                </div>
-              </WeatherDetail>
-            )}
-          </>
-        </AsideSection>
-      )}
-    </AnimatePresence>
+              </SearchBar>
+              <SearchHistory>
+                {history.map((value, index) => (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    key={index}
+                    onClick={(e) => handleSearch(e.target.textContent)}
+                  >
+                    {value.search}
+                  </p>
+                ))}
+              </SearchHistory>
+              {weatherData && (
+                <WeatherDetail>
+                  <h3>Weather Details</h3>
+                  <div>
+                    <div className="result-box">
+                      <p>Cloudly</p>
+                      <p className="result">{weatherData.current.cloud}%</p>
+                    </div>
+                    <div className="result-box">
+                      <p>Humidity</p>
+                      <p className="result">{weatherData.current.humidity}%</p>
+                    </div>
+                    <div className="result-box">
+                      <p>Wind</p>
+                      <p className="result">
+                        {weatherData.current.wind_kph}km/h
+                      </p>
+                    </div>
+                  </div>
+                </WeatherDetail>
+              )}
+            </AsideSection>
+          )}
+        </Hide>
+      </AnimatePresence>
+      <Blank isToggle={isToggle} mobileSize={mobileSize} />
+    </>
   );
 };
 
 const AsideSection = styled(motion.section)`
   position: fixed;
+  display: flex;
+  flex-direction: column;
   z-index: 8;
   top: 0;
   width: 100%;
   height: 100vh;
-  padding: 10vh 30px 10%;
+  padding: 0 30px 10vh;
   background: rgba(23, 37, 58, 0.7);
   p {
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.5);
   }
+
   @media screen and (max-height: 400px) {
-    padding-top: 15vh;
     overflow-x: scroll;
+  }
+
+  @media screen and (min-width: 850px) {
+    right: 0;
+    width: 35%;
+    box-shadow: -2px -1px 8px 2px rgba(0, 0, 0, 0.4);
+    z-index: 11;
+    p {
+      font-size: 1.1rem;
+    }
   }
 `;
 
 const SearchBar = styled.div`
+  padding-top: 5.7rem;
   display: flex;
-  margin-top: 5px;
+  align-items: center;
   input {
     width: 80%;
     height: 20px;
     font-size: 1rem;
     background: transparent;
     border: none;
-    margin-top: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     margin-right: 8%;
     color: rgba(255, 255, 255, 1);
@@ -141,40 +173,46 @@ const SearchBar = styled.div`
   .icon-box {
     position: absolute;
     cursor: pointer;
-    top: 10vh;
-    margin-top: 5px;
-    right: 0;
+    top: 4.5rem;
+    right: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: lightblue;
     width: 50px;
     height: 50px;
-    svg {
-      opacity: 0.5;
+    @media screen and (min-width: 850px) {
+      margin: 0;
+      right: 0;
+      top: 0;
+      width: 125px;
+      height: 125px;
     }
+  }
+  @media screen and (min-width: 850px) {
+    margin-top: 0;
+    font-size: 1.1rem;
+    min-height: 125px;
   }
 `;
 
 const SearchHistory = styled.div`
   display: flex;
   flex-direction: column-reverse;
-  justify-content: flex-end;
-  min-height: 30vh;
+  justify-content: space-evenly;
+  flex: 1;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  p {
-    margin: 10px 0;
-  }
 `;
 
 const WeatherDetail = styled.div`
-  min-height: 35vh;
+  flex: 1;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   h3 {
     font-size: 0.8rem;
     font-weight: 500;
     margin: 1.5rem 0;
     color: #f1f1f1;
+    margin-bottom: 30px;
   }
   .result-box {
     display: flex;
@@ -184,6 +222,10 @@ const WeatherDetail = styled.div`
       color: #f1f1f1;
     }
   }
+`;
+
+const Hide = styled.div`
+  overflow: hidden;
 `;
 
 export default AsideBar;

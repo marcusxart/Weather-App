@@ -23,20 +23,28 @@ const Nav = ({ handleToggle, isToggle }) => {
 
 const NavStyled = styled.nav`
   padding: 0 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
+  z-index: 12;
   justify-content: space-between;
   align-items: center;
   min-height: 10vh;
   color: white;
-  h1 {
-    font-size: 1.2rem;
-  }
   @media screen and (max-height: 400px) {
     min-height: 15vh;
+  }
+  @media screen and (min-width: 850px) {
+    padding: 0 80px;
   }
 `;
 const Menu = styled(motion.div)`
   overflow: hidden;
+  @media screen and (min-width: 850px) {
+    visibility: hidden;
+  }
 `;
 const Line = styled(motion.div)`
   height: 2.5px;

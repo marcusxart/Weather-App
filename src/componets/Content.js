@@ -5,7 +5,6 @@ import { dateAndTime } from "../utils";
 const Content = ({ isToggle, weatherData }) => {
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
-  console.log(weatherData);
 
   useEffect(() => {
     if (weatherData) {
@@ -20,10 +19,12 @@ const Content = ({ isToggle, weatherData }) => {
         <ContentStyled isToggle={isToggle}>
           <h2>{weatherData.current.temp_c}°</h2>
           <div className="description">
-            <h3>{weatherData.location.name}</h3>
-            <h4>{weatherData.location.country}</h4>
-            <div>
-              <p>{`${time} + ${date}`}</p>
+            <div className="titles">
+              <h3>{weatherData.location.name}</h3>
+              <h4>{weatherData.location.country}</h4>
+              <div className="time">
+                <p>{`${time} + ${date}`}</p>
+              </div>
             </div>
             <div className="icon">
               <img src={weatherData.current.condition.icon} alt="" />
@@ -41,11 +42,11 @@ const ContentStyled = styled.section`
   z-index: 3;
   display: flex;
   transition: filter 0.5s;
-  ${(props) => (props.isToggle ? "filter: blur(10px);" : "filter: blur(0px)")};
   width: 100%;
   min-height: 80vh;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
   justify-content: center;
   margin-right: 20px;
   text-align: left;
@@ -54,26 +55,76 @@ const ContentStyled = styled.section`
     padding-bottom: 100px;
   }
   h2 {
-    width: 200px;
+    max-width: 300px;
+    margin-right: 55px;
     font-size: 5rem;
     font-weight: 500;
-    height: 110px;
   }
   .description {
-    width: 200px;
     h3 {
       font-weight: 500;
       font-size: 2rem;
-      height: 42px;
       margin-bottom: 5px;
     }
     p {
       font-size: 0.8rem;
     }
   }
-  .icon {
-    p {
-      margin: 0;
+
+  @media screen and (min-width: 850px) {
+    width: 65%;
+    align-items: flex-start;
+    padding: 100px 0 0 80px;
+    h2 {
+      font-size: 8rem;
+    }
+    .description {
+      width: 100%;
+      h3 {
+        font-size: 2.5rem;
+      }
+      h4 {
+        font-size: 1.3rem;
+      }
+    }
+
+    .time {
+      margin-top: 20px;
+      width: 100%;
+      p {
+        font-size: 1rem;
+      }
+    }
+    .icon {
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-evenly;
+    h2 {
+      margin-right: 3%;
+      height: 145px;
+    }
+    .description {
+      display: flex;
+      width: 100%;
+      .titles {
+        margin-right: 3%;
+      }
+      .icon {
+        margin-top: 8px;
+        P {
+          margin-left: 23px;
+        }
+        img {
+          width: 100px;
+        }
+      }
     }
   }
 `;
