@@ -22,7 +22,7 @@ const Home = () => {
   useEffect(() => {
     axios
       .get(
-        "http://api.weatherapi.com/v1/current.json?key=f756f7af453a49ebaae154848222804&q=lagos&aqi=no"
+        "https://api.weatherapi.com/v1/current.json?key=f756f7af453a49ebaae154848222804&q=lagos&aqi=no"
       )
       .then((data) => {
         setWeatherData(data.data);
